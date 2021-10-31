@@ -1,3 +1,4 @@
+from typing import List, Any, Union, Sequence
 import json
 import pprint
 import random
@@ -22,7 +23,9 @@ EVAPORATION_COEF = 0.1
 INITIAL_PHEROMONE = 0.1
 
 
-def create_path(pheromones):
+def create_path(
+    pheromones: Union[Sequence[Sequence[int]], Sequence[Sequence[float]]]
+) -> List[int]:
     index = START_ROW
     path = [index]
 
@@ -36,27 +39,33 @@ def create_path(pheromones):
     return path
 
 
-def update_pheromone(pheromones, paths):
+def update_pheromone(
+    pheromones: Union[Sequence[Sequence[int]], Sequence[Sequence[float]]],
+    paths: Sequence[Sequence[int]],
+):
     l = len(pheromones)
     for i in range(l):
         for j in range(l):
             if matrix[i][j] == 1:
-                pheromones[i][j] = pheromones[i][j] * (1 - EVAPORATION_COEF)
+                pheromones[i][j] = pheromones[i][j] * (1 - EVAPORATION_COEF)  # type: ignore
 
     for path in paths:
-        if path[-1] == FINISH_ROW:
+        if path[-1] == FINISH_ROW:  # type: ignore
             for index in range(len(path) - 1):
-                pheromones[path[index]][path[index + 1]] += 1 / len(path)
+                pheromones[path[index]][path[index + 1]] += 1 / len(path)  # type: ignore
 
 
-def path_count(paths):
+def path_count(paths: Sequence[Sequence[int]]) -> List[Any]:
     s = [json.dumps(p) for p in paths]
     return sorted(
         [(s.count(p), json.loads(p)) for p in set(s)], key=lambda p: p[0], reverse=True
     )
 
 
-def display_result(pheromones, paths):
+def display_result(
+    pheromones: Union[Sequence[Sequence[int]], Sequence[Sequence[float]]],
+    paths: Sequence[Sequence[int]],
+):
     print(f"\nResult in Interaction {INTERATIONS}:")
     for x, path in path_count(paths):
         print(f"{x} Ant: {path}")
