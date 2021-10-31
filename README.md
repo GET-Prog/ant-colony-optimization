@@ -1,4 +1,4 @@
-# Ant Colony Optimizarion
+# Ant Colony Optimization
 
 This repository contains an implementation of the Ant Colony Optimization algorithm.
 
